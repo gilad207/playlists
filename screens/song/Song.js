@@ -1,19 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Container, CardItem, Card, Content, Footer, FooterTab, Button, Header, Item, Input, Icon } from 'native-base';
+import { Text } from 'react-native'
 
-export default function Song() {
+export default function Song({ route }) {
+  const { name } = route.params;
+  const range = Array(5).fill().map((_, i) => { return { key: i } })
+
   return (
-    <View style={styles.container}>
-      <Text>Song</Text>
-    </View>
-  );
+    <Container>
+      <Header searchBar rounded>
+      </Header>
+      <Content>
+        <Card>
+          {range.map(item =>
+            <CardItem >
+              <Text>
+                {name + item.key}
+              </Text>
+            </CardItem>)}
+        </Card>
+      </Content>
+      <Footer>
+      </Footer>
+    </Container>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

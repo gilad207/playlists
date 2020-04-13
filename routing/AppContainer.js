@@ -13,8 +13,8 @@ export default function AppContainer() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={{title: 'פלייליסטים',}}/>
-        <Stack.Screen name="Playlist" component={Playlist} options={{title: 'פלייליסט',}}/>
-        <Stack.Screen name="Song" component={Song} options={{title: 'שיר',}}/>
+        <Stack.Screen name="Playlist" component={Playlist} options={({ route }) => ({ title: route.params.name })}/>
+        <Stack.Screen name="Song" component={Song} options={({ route }) => ({ title: route.params.name })}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

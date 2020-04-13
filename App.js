@@ -1,11 +1,37 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { AppLoading } from 'expo';
 import AppContainer from './routing/AppContainer';
-import Home from './screens/home/Home';
-import Song from './screens/song/Song';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+import { I18nManager } from 'react-native';
+
+I18nManager.forceRTL(true);
+
+const loadFonts = async (setFontReady) => {
+  await Font.loadAsync({
+    'Heebo': require('./assets/fonts/Heebo/Heebo-Light.ttf'),
+    'Heebo-Bold': require('./assets/fonts/Heebo/Heebo-Bold.ttf'),
+    'Assistant': require('./assets/fonts/Assistant/Assistant-Light.ttf'),
+    'Assistant-Bold': require('./assets/fonts/Assistant/Assistant-Bold.ttf'),
+    Roboto: require('native-base/Fonts/Roboto.ttf'),
+    Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+    ...Ionicons.font,
+  });
+  setFontReady(true);
+};
 
 export default function App() {
+  const [fontReady, setFontReady] = useState(false);
+
+  useEffect(() => {
+    loadFonts(setFontReady);
+  }, []);
+
+  if (!(fontReady)) {
+    return <AppLoading />;
+  }
+
   return (
-      <AppContainer/>
+    <AppContainer/>
   );
 }
