@@ -1,50 +1,66 @@
-import React, { useState } from 'react';
-import { Container, CardItem, Card, Content, Footer, FooterTab, Button, Header, Item, Input, Icon, Left, Right } from 'native-base';
-import { Text } from 'react-native'
+import React, { useState, useEffect } from 'react';
 import HeeboText from '../../components/HeeboText';
-import { PLAYLISTS } from '../../assets/Data'
-import Playlist from '../playlist/Playlist';
+import { DATA } from '../../assets/Data'
+import { Searchbar, List, Card, Title, Paragraph, Divider, FAB } from 'react-native-paper'
+import { FlatList, View, StyleSheet,StatusBar,ScrollView } from 'react-native'
 
 export default function Home({ navigation }) {
-  const [Playlists, setPlaylists] = useState(PLAYLISTS)
+  const [searchValue, setSearchValue] = useState('');
+  const [playlists, setPlaylists] = useState(DATA)
+  const [filteredPlaylists, setFilteredPlaylists] = useState(DATA)
 
-  const addPlaylist = () =>{
-    setPlaylists((prev) =>{
-      return [...prev, {key:Playlists.length}];
+  useEffect(() => {
+    setFilteredPlaylists(playlists
+      .filter(item => item.key.includes(searchValue)))
+  }, [playlists]);
+
+  const addPlaylist = () => {
+    setPlaylists((prev) => {
+      return [...prev, { key: playlists.length.toString() }];
     })
   }
 
+  const onChangeText = (value) =>{
+    setSearchValue(value);
+    setFilteredPlaylists(playlists
+      .filter(item => item.key.includes(value)))
+  }
+
   return (
-    <Container>
-      <Header searchBar rounded>
-        <Item>
-          <Icon name="ios-search" />
-          <Input placeholder="חיפוש..." />
-        </Item>
-        <Button transparent>
-          <Text>Search</Text>
-        </Button>
-      </Header>
-      <Content>
-        {Playlists.map(item =>
-          <Card>
-            <CardItem button onPress={() => navigation.navigate('Playlist', { name: item.key })}>
-              <Text>
-                {item.key}
-              </Text>
-            </CardItem>
-          </Card>)}
-      </Content>
-      <Footer>
-        <Right>
-          <Button onPress={() => addPlaylist()}>
-            <HeeboText size={20} color={'white'}>
-              הוסף
-          </HeeboText>
-            <Icon type="AntDesign" name="pluscircleo" style={{ fontSize: 24 }} />
-          </Button>
-        </Right>
-      </Footer>
-    </Container>
+    <View style={{ flex: 1}}>
+       <Searchbar 
+       style={{marginTop:StatusBar.currentHeight*2, width:'90%', alignSelf:'center'}}
+        placeholder="חפש..."
+        value={searchValue}
+        onChangeText={onChangeText}
+      />
+      <FlatList
+        data={filteredPlaylists}
+        numColumns={3}
+        renderItem={({ item }) =>
+          <Card style={{ marginVertical: 30,marginHorizontal:43, width:180, height:180 }}>
+            <Card.Title title="Card Title" />
+            <Card.Content>
+              <HeeboText>
+                {item.key} </HeeboText>
+            </Card.Content>
+          </Card>
+        } />
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={addPlaylist}
+      />
+    </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 75,
+    right: 0,
+    bottom: 0,
+  },
+})

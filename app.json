@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "IDF Carpool",
-    "slug": "IdfCarPool",
+    "name": "Playlist",
+    "slug": "Playlist",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -27,15 +27,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    },
-    "android": {
-      "package": "il.idf.IDFCarpool",
-      "googleServicesFile": "./google-services.json"
-    },
-    "notification": {
-      "icon": "./assets/icon.png",
-      "androidMode": "default",
-      "iosDisplayInForeground": true
     }
   }
 }

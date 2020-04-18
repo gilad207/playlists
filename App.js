@@ -27,11 +27,6 @@ export default function App() {
     loadFonts(setFontReady);
   }, []);
 
-  if (!(fontReady)) {
-    return <AppLoading />;
-  }
-
-  return (
-    <AppContainer/>
-  );
+  return fontReady ? <AppContainer /> : <AppLoading />;
 }
+

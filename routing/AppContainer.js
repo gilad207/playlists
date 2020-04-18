@@ -11,8 +11,8 @@ const Stack = createStackNavigator();
 export default function AppContainer() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} options={{title: 'פלייליסטים',}}/>
+      <Stack.Navigator options={{}}>
+        <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
         <Stack.Screen name="Playlist" component={Playlist} options={({ route }) => ({ title: route.params.name })}/>
         <Stack.Screen name="Song" component={Song} options={({ route }) => ({ title: route.params.name })}/>
       </Stack.Navigator>

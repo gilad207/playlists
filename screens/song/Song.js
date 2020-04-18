@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, CardItem, Card, Content, Footer, FooterTab, Button, Header, Item, Input, Icon } from 'native-base';
-import { Text } from 'react-native'
+import { Container, CardItem, Card, Content, Footer, ListItem, List, Header, Left, Right, Icon, Button } from 'native-base';
+import HeeboText from '../../components/HeeboText';
 
 export default function Song({ route }) {
   const { name } = route.params;
-  const range = Array(5).fill().map((_, i) => { return { key: i } })
+  const range = Array(5).fill().map((_, i) => { return { key: i.toString() } })
 
   return (
     <Container>
@@ -12,12 +12,14 @@ export default function Song({ route }) {
       </Header>
       <Content>
         <Card>
-          {range.map(item =>
-            <CardItem >
-              <Text>
-                {name + item.key}
-              </Text>
-            </CardItem>)}
+          <List
+            dataArray={range}
+            renderRow={({ key }) =>
+              <CardItem>
+                <HeeboText>
+                  {name + key}
+                </HeeboText>
+              </CardItem>} />
         </Card>
       </Content>
       <Footer>
