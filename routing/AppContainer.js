@@ -1,7 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import {Text} from 'native-base'
 import Song from '../screens/song/Song';
 import Playlist from '../screens/playlist/Playlist';
 import Home from '../screens/home/Home';
@@ -13,8 +12,8 @@ export default function AppContainer() {
     <NavigationContainer>
       <Stack.Navigator options={{}}>
         <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
-        <Stack.Screen name="Playlist" component={Playlist} options={({ route }) => ({ title: route.params.name })}/>
-        <Stack.Screen name="Song" component={Song} options={({ route }) => ({ title: route.params.name })}/>
+        {/* <Stack.Screen name="Playlist" component={Playlist} options={({ route }) => ({ title: route.params.name })}/>
+        <Stack.Screen name="Song" component={Song} options={({ route }) => ({ title: route.params.name })}/> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

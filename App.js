@@ -13,8 +13,6 @@ const loadFonts = async (setFontReady) => {
     'Heebo-Bold': require('./assets/fonts/Heebo/Heebo-Bold.ttf'),
     'Assistant': require('./assets/fonts/Assistant/Assistant-Light.ttf'),
     'Assistant-Bold': require('./assets/fonts/Assistant/Assistant-Bold.ttf'),
-    Roboto: require('native-base/Fonts/Roboto.ttf'),
-    Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
     ...Ionicons.font,
   });
   setFontReady(true);
