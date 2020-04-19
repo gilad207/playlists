@@ -1,70 +1,85 @@
-// import React, { useState } from 'react';
-// import { Container, CardItem, List, ListItem, Content, Footer, Button, Header, Item, Input, Icon, Left, Right } from 'native-base';
-// import HeeboText from '../../components/HeeboText'
-// import {DATA} from '../../assets/Data'
-// import SearchBar from 'react-native-material-design-searchbar';
+import React, { useState, useEffect } from 'react';
+import HeeboText from '../../components/HeeboText';
+import { DATA } from '../../assets/Data'
+import { Searchbar, Snackbar, Card, IconButton, FAB } from 'react-native-paper'
+import { FlatList, View, StyleSheet } from 'react-native'
+import { GlobalStyles } from '../../GlobalStyles'
 
-// export default function Playlist({ navigation, route }) {
-//   const { name } = route.params;
-//   const [songs, setSongs] = useState(DATA)
-//   const [filteredSongs, setFilteredSongs] = useState(DATA)
+export default function Playlist({ navigation }) {
+    const [searchValue, setSearchValue] = useState('');
+    const [songs, setSongs] = useState(DATA)
+    const [filteredSongs, setFilteredSongs] = useState(DATA)
+    const [isSnackbarVisible, setSnackbarVisible] = useState(false);
 
-//   const addSong = () => {
-//     setSongs((prev) => {
-//       return [...prev, { key: songs.length.toString() }];
-//     })
-//   }
+    useEffect(() => {
+        setFilteredSongs(songs
+            .filter(item => item.key.includes(searchValue)))
+    }, [songs]);
 
-//   const updateFilteredList = (value) => {
-//     songs.filter(item => {console.log(item.key);item.key.includes(value)});
-//     setFilteredSongs(
-//       songs.filter(item => item.key.includes(value)))}
+    const addPlaylist = () => {
+        setSongs((prev) => {
+            return [...prev, { key: songs.length.toString() }];
+        })
+    }
 
-//   return (
-//     <Container>
-//       {/* <Header searchBar rounded> */}
-//       <SearchBar
-//         onSearchChange={() => console.log('On Search Change')}
-//         height={50}
-//         onFocus={() => console.log('On Focus')}
-//         onBlur={() => console.log('On Blur')}
-//         placeholder={'Search...'}
-//         autoCorrect={false}
-//         padding={5}
-//         returnKeyType={'search'}
-//       />
-//         {/* <Item>
-//           <Icon name="ios-search" />
-//           <Input placeholder="חיפוש..." onChangeText={(value)=>updateFilteredList(value)}/>
-//         </Item> */}
-//       {/* </Header> */}
-//       <Content>
-//         <List
-//           dataArray={filteredSongs}
-//           renderRow={({ key }) =>
-//             <ListItem button onPress={() => navigation.navigate('Song', { name: (name + key) })}>
-//               <Left>
-//                 <HeeboText>
-//                   {name + key}
-//                 </HeeboText>
-//               </Left>
-//               <Right>
-//                 <Button transparent onPress={() => alert("bla")}>
-//                   <Icon type="MaterialCommunityIcons" name="dots-horizontal" style={{ fontSize: 28, color: 'black' }} />
-//                 </Button>
-//               </Right>
-//             </ListItem>} />
-//       </Content>
-//       <Footer>
-//         <Right>
-//           <Button onPress={() => addSong()}>
-//             <HeeboText size={20} color={'white'}>
-//               הוסף
-//           </HeeboText>
-//             <Icon type="AntDesign" name="pluscircleo" style={{ fontSize: 24 }} />
-//           </Button>
-//         </Right>
-//       </Footer>
-//     </Container>
-//   )
-// }
+    const onChangeText = (value) => {
+        setSearchValue(value);
+        setFilteredSongs(songs
+            .filter(item => item.key.includes(value)))
+    }
+
+    return (
+        <View style={{ flex: 1 }}>
+            <Searchbar
+                style={GlobalStyles.searchbar}
+                placeholder="חפש..."
+                value={searchValue}
+                onChangeText={onChangeText}
+            />
+            <FlatList
+                data={filteredSongs}
+                renderItem={({ item }) =>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Card style={styles.card}
+                            onPress={() => navigation.navigate('Song', { name: item.key })}>
+                            <Card.Title title={item.key} />
+                        </Card>
+                        <IconButton
+                            icon='dots-horizontal'
+                            size={40}
+                            onPress={() => setSnackbarVisible(true)}
+                        />
+                    </View>
+                } />
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={addPlaylist}
+            />
+            <Snackbar
+                visible={isSnackbarVisible}
+                onDismiss={() => { setSnackbarVisible(false) }}
+                duration={1000}>
+                <HeeboText>
+                    הקובץ הורד
+            </HeeboText>
+            </Snackbar>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    fab: {
+        position: 'absolute',
+        margin: 80,
+        right: 0,
+        bottom: 0,
+    },
+    card: {
+        marginVertical: 10,
+        marginLeft: 43,
+        marginRight: 10,
+        width: '80%',
+        height: 70,
+    },
+})

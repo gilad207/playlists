@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import HeeboText from '../../components/HeeboText';
 import { DATA } from '../../assets/Data'
 import { Searchbar, List, Card, Title, Paragraph, Divider, FAB } from 'react-native-paper'
-import { FlatList, View, StyleSheet,StatusBar,ScrollView } from 'react-native'
+import { FlatList, View, StyleSheet } from 'react-native'
+import { GlobalStyles } from '../../GlobalStyles'
 
 export default function Home({ navigation }) {
   const [searchValue, setSearchValue] = useState('');
@@ -20,16 +21,16 @@ export default function Home({ navigation }) {
     })
   }
 
-  const onChangeText = (value) =>{
+  const onChangeText = (value) => {
     setSearchValue(value);
     setFilteredPlaylists(playlists
       .filter(item => item.key.includes(value)))
   }
 
   return (
-    <View style={{ flex: 1}}>
-       <Searchbar 
-       style={{marginTop:StatusBar.currentHeight*2, width:'90%', alignSelf:'center'}}
+    <View style={{ flex: 1 }}>
+      <Searchbar
+        style={GlobalStyles.searchbar}
         placeholder="חפש..."
         value={searchValue}
         onChangeText={onChangeText}
@@ -38,7 +39,8 @@ export default function Home({ navigation }) {
         data={filteredPlaylists}
         numColumns={3}
         renderItem={({ item }) =>
-          <Card style={{ marginVertical: 30,marginHorizontal:43, width:180, height:180 }}>
+          <Card style={styles.card}
+            onPress={() => navigation.navigate('Playlist', { name: item.key })}>
             <Card.Title title="Card Title" />
             <Card.Content>
               <HeeboText>
@@ -55,12 +57,17 @@ export default function Home({ navigation }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     margin: 75,
     right: 0,
     bottom: 0,
+  },
+  card: {
+    marginVertical: 30,
+    marginHorizontal: 32,
+    width: 200,
+    height: 200
   },
 })
